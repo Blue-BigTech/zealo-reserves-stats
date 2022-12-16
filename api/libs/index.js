@@ -2,14 +2,15 @@ const axios = require('axios');
 
 const { 
     addDecimals,
-    getDecimals
+    getDecimals,
+    getDecimalsTRC20
 } = require('../../utils/index');
 
 const getBalanceOfBTC = async( wallet ) => {
     const res = axios.get(`https://blockchain.info/q/addressbalance/${wallet}?confirmations=2`)
                     .then(function(res) {
                         const BTC = addDecimals(res.data, 8);
-                        return { 'Balance of BTC' : BTC };
+                        return { 'Balance' : BTC };
                     })
                     .catch(function(err) {
                         return { Error : err };
@@ -24,7 +25,7 @@ const getBalanceOfETH = async( wallet ) => {
                         }
                     })
                     .then(function(res) {
-                        return { 'Balance of ETH' : res.data };
+                        return { 'Balance' : res.data };
                     })
                     .catch(function(err) {
                         return { Error : err };
@@ -55,7 +56,47 @@ const getBalanceOfBNB_BEP20 = async( wallet ) => {
                         headers : { 'x-api-key' : 'ffb508aa-3bd0-424f-8816-050d1b82ac70' }
                     })
                     .then(function(res) {
-                        return { 'Balance of BNB' : res.data };
+                        return { 'Balance' : res.data };
+                    })
+                    .catch(function(err) {
+                        return { Error : err };
+                    });
+    return res;
+}
+
+const getBalanceOfBNB_BEP2 = async( wallet ) => {
+    const res = axios.get(`https://api.tatum.io/v3/bnb/account/${ wallet }`, {
+                        headers : { 'x-api-key' : 'ffb508aa-3bd0-424f-8816-050d1b82ac70' }
+                    })
+                    .then(function(res) {
+                        return { 'Balance' : res.data };
+                    })
+                    .catch(function(err) {
+                        return { Error : err };
+                    });
+    return res;
+}
+
+const getBalanceOfTRC20 = async( contractAddress, wallet ) => {
+    const dec = await getDecimalsTRC20(contractAddress);
+    const res = axios.get(`https://api.tatum.io/v3/tron/account/${ wallet }`, {
+                        headers : { 'x-api-key' : 'ffb508aa-3bd0-424f-8816-050d1b82ac70' }
+                    })
+                    .then(function(res) {
+                        // const json = JSON.parse(res.data);
+                        // return { 'Balance' : res.data.balance };
+                        const trc20 = res.data.trc20;
+                        let token;
+                        for(let i in trc20){
+                            token = trc20[i];
+                            if(trc20[i].hasOwnProperty(contractAddress)){
+                                break;
+                            }
+                        }
+                        return {
+                            "Balance" : token[contractAddress],
+                            "Decimals" : dec
+                        };
                     })
                     .catch(function(err) {
                         return { Error : err };
@@ -67,5 +108,7 @@ module.exports = {
     getBalanceOfBTC,
     getBalanceOfETH,
     getBalanceOfERC20,
-    getBalanceOfBNB_BEP20
+    getBalanceOfBNB_BEP20,
+    getBalanceOfBNB_BEP2,
+    getBalanceOfTRC20
 }

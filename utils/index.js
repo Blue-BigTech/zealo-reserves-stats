@@ -1,10 +1,13 @@
 const fs = require('fs');
 const {BN} = require('web3-utils');
 const Web3 = require('web3');
+const TronWeb = require('tronweb');
 
 const ETH_USDC_ADDR = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 const ETH_BUSD_ADDR = '0x4Fabb145d64652a948d72533023f6E7A623C7C53';
 const ETH_BNB_ADDR = '0xB8c77482e45F1F44dE1745F52C74426C631bDD52';
+const TRON_USDC_ADDR = 'TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8';
+const TRON_USDT_ADDR = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
 const ETH_RPC_URL = 'https://rpc.ankr.com/eth';
 const BSC_RPC_URL = 'https://bsc-dataseed1.binance.org';
 
@@ -43,13 +46,30 @@ async function getDecimals( chain, tokenAddress ){
     return await tokenRouter.methods.decimals().call();
 }
 
+//for tronchain
+const HttpProvider = TronWeb.providers.HttpProvider;
+const fullNode = new HttpProvider("https://api.trongrid.io");
+const solidityNode = new HttpProvider("https://api.trongrid.io");
+const eventServer = new HttpProvider("https://api.trongrid.io");
+const privateKey = "739b75ea67435ee9afbaddd7495b633b77bc90841ea35c9e4b837d42c0bfe0d8";
+const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
+
+async function getDecimalsTRC20(tokenAddress){
+    let tokenRouter = await tronWeb.contract().at(tokenAddress);
+    const dec = await tokenRouter.decimals().call();
+    return dec;
+}
+
 module.exports = {
     ETH_USDC_ADDR,
     ETH_BUSD_ADDR,
     ETH_BNB_ADDR,
+    TRON_USDC_ADDR,
+    TRON_USDT_ADDR,
     ETH_RPC_URL,
     BSC_RPC_URL,
     addDecimals,
     setDecimals,
-    getDecimals
+    getDecimals,
+    getDecimalsTRC20
 }

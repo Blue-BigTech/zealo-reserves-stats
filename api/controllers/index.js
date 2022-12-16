@@ -2,7 +2,9 @@ const { matchedData } = require('express-validator');
 const { 
     ETH_USDC_ADDR,
     ETH_BUSD_ADDR,
-    ETH_BNB_ADDR
+    ETH_BNB_ADDR,
+    TRON_USDC_ADDR,
+    TRON_USDT_ADDR
 } = require('../../utils/index');
 
 
@@ -11,6 +13,8 @@ const {
     getBalanceOfETH,
     getBalanceOfERC20,
     getBalanceOfBNB_BEP20,
+    getBalanceOfBNB_BEP2,
+    getBalanceOfTRC20,
 } = require('../libs/index');
 
 
@@ -56,11 +60,36 @@ const balanceOfBNB_BEP20 = async (req, res) => {
     res.status(200).json(result);
 }
 
+const balanceOfBNB_BEP2 = async (req, res) => {
+    const data = matchedData(req);
+    const wallet = data.wallet;
+    const result = await getBalanceOfBNB_BEP20(wallet);
+    res.status(200).json(result);
+}
+
+const balanceOfTRON_USDC = async (req, res) => {
+    const data = matchedData(req);
+    const wallet = data.wallet;
+    const result = await getBalanceOfTRC20(TRON_USDC_ADDR, wallet);
+    console.log(result);
+    res.status(200).json(result);
+}
+
+const balanceOfTRON_USDT = async (req, res) => {
+    const data = matchedData(req);
+    const wallet = data.wallet;
+    const result = await getBalanceOfTRC20(TRON_USDT_ADDR, wallet);
+    res.status(200).json(result);
+}
+
 module.exports = {
     balanceOfBTC,
     balanceOfETH,
     balanceOfETH_USDC,
     balanceOfETH_BUSD,
     balanceOfETH_BNB,
-    balanceOfBNB_BEP20
+    balanceOfBNB_BEP20,
+    balanceOfBNB_BEP2,
+    balanceOfTRON_USDC,
+    balanceOfTRON_USDT,
 }
