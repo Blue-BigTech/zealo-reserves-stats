@@ -11,15 +11,18 @@
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "dev:server": "cd client && npm run build && cd .. && npm run start",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "@truffle/hdwallet-provider": "^2.1.1",
+    "axios": "^1.2.1",
     "body-parser": "^1.19.0",
     "dotenv": "^16.0.3",
     "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
-    "web3": "^1.8.0",
+    "express-validator": "^6.14.2",
+    "trim-request": "^1.0.6",
+    "web3": "^1.8.1",
     "web3-utils": "^1.8.1"
   },
   "devDependencies": {
