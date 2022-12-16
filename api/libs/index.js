@@ -69,7 +69,15 @@ const getBalanceOfBNB_BEP2 = async( wallet ) => {
                         headers : { 'x-api-key' : 'ffb508aa-3bd0-424f-8816-050d1b82ac70' }
                     })
                     .then(function(res) {
-                        return { 'Balance' : res.data };
+                        const balances = res.data.balances;
+                        let token;
+                        for(let i in balances){
+                            token = balances[i];
+                            if(token.hasOwnProperty('BNB')){
+                                break;
+                            }
+                        }
+                        return { 'Balance' :  token['free'] };
                     })
                     .catch(function(err) {
                         return { Error : err };
@@ -83,13 +91,11 @@ const getBalanceOfTRC20 = async( contractAddress, wallet ) => {
                         headers : { 'x-api-key' : 'ffb508aa-3bd0-424f-8816-050d1b82ac70' }
                     })
                     .then(function(res) {
-                        // const json = JSON.parse(res.data);
-                        // return { 'Balance' : res.data.balance };
                         const trc20 = res.data.trc20;
                         let token;
                         for(let i in trc20){
                             token = trc20[i];
-                            if(trc20[i].hasOwnProperty(contractAddress)){
+                            if(token.hasOwnProperty(contractAddress)){
                                 break;
                             }
                         }

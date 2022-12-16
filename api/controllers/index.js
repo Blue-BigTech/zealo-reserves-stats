@@ -63,7 +63,8 @@ const balanceOfBNB_BEP20 = async (req, res) => {
 const balanceOfBNB_BEP2 = async (req, res) => {
     const data = matchedData(req);
     const wallet = data.wallet;
-    const result = await getBalanceOfBNB_BEP20(wallet);
+    const result = await getBalanceOfBNB_BEP2(wallet);
+    console.log(result);
     res.status(200).json(result);
 }
 
@@ -71,7 +72,6 @@ const balanceOfTRON_USDC = async (req, res) => {
     const data = matchedData(req);
     const wallet = data.wallet;
     const result = await getBalanceOfTRC20(TRON_USDC_ADDR, wallet);
-    console.log(result);
     res.status(200).json(result);
 }
 
