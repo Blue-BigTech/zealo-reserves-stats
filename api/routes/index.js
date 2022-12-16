@@ -9,7 +9,8 @@ const {
 
  const { 
     balanceOfBTC,
-    balanceOfETH
+    balanceOfETH,
+    balanceOfETH_USDC
  } = require('../controllers/index');
 
 router.post('/test', (req, res) => {
@@ -17,5 +18,6 @@ router.post('/test', (req, res) => {
 })
 router.get('/balance-btc', trimRequest.all, validateBTC, balanceOfBTC);
 router.get('/balance-eth', trimRequest.all, validateETH, balanceOfETH);
+router.get('/balance-eth-usdc', trimRequest.all, validateETH, balanceOfETH_USDC);
 
 module.exports = router;
