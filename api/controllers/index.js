@@ -1,5 +1,8 @@
 const { matchedData } = require('express-validator');
-const { ETH_USDC_ADDR } = require('../../utils/index');
+const { 
+    ETH_USDC_ADDR,
+    ETH_BUSD_ADDR
+} = require('../../utils/index');
 
 
 const { 
@@ -30,8 +33,16 @@ const balanceOfETH_USDC = async (req, res) => {
     res.status(200).json(result);
 }
 
+const balanceOfETH_BUSD = async (req, res) => {
+    const data = matchedData(req);
+    const wallet = data.wallet;
+    const result = await getBalanceOfERC20('ETH', ETH_BUSD_ADDR, wallet);
+    res.status(200).json(result);
+}
+
 module.exports = {
     balanceOfBTC,
     balanceOfETH,
-    balanceOfETH_USDC
+    balanceOfETH_USDC,
+    balanceOfETH_BUSD
 }
