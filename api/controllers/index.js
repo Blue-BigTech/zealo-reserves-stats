@@ -9,7 +9,8 @@ const {
 const { 
     getBalanceOfBTC,
     getBalanceOfETH,
-    getBalanceOfERC20
+    getBalanceOfERC20,
+    getBalanceOfBNB_BEP20,
 } = require('../libs/index');
 
 
@@ -48,10 +49,18 @@ const balanceOfETH_BNB = async (req, res) => {
     res.status(200).json(result);
 }
 
+const balanceOfBNB_BEP20 = async (req, res) => {
+    const data = matchedData(req);
+    const wallet = data.wallet;
+    const result = await getBalanceOfBNB_BEP20(wallet);
+    res.status(200).json(result);
+}
+
 module.exports = {
     balanceOfBTC,
     balanceOfETH,
     balanceOfETH_USDC,
     balanceOfETH_BUSD,
-    balanceOfETH_BNB
+    balanceOfETH_BNB,
+    balanceOfBNB_BEP20
 }

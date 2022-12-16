@@ -4,6 +4,7 @@ const {
     addDecimals,
     getDecimals
 } = require('../../utils/index');
+
 const getBalanceOfBTC = async( wallet ) => {
     const res = axios.get(`https://blockchain.info/q/addressbalance/${wallet}?confirmations=2`)
                     .then(function(res) {
@@ -49,8 +50,22 @@ const getBalanceOfERC20 = async( chain, contractAddress, wallet ) => {
     return res;
 }
 
+const getBalanceOfBNB_BEP20 = async( wallet ) => {
+    const res = axios.get(`https://api.tatum.io/v3/bsc/account/balance/${ wallet }`, {
+                        headers : { 'x-api-key' : 'ffb508aa-3bd0-424f-8816-050d1b82ac70' }
+                    })
+                    .then(function(res) {
+                        return { 'Balance of BNB' : res.data };
+                    })
+                    .catch(function(err) {
+                        return { Error : err };
+                    });
+    return res;
+}
+
 module.exports = {
     getBalanceOfBTC,
     getBalanceOfETH,
-    getBalanceOfERC20
+    getBalanceOfERC20,
+    getBalanceOfBNB_BEP20
 }
