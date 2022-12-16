@@ -1,5 +1,4 @@
-# WARNING: You had already pushed your wallet private key. 
-# bsc-meme-buy-bot on pancakeswap
+# zealo_reserves_stats
 
 > Using create-react-app with a Node Express Backend
 
