@@ -9,6 +9,7 @@ const {
 
 
 const { 
+    getAllPriceData,
     getBalanceOfBTC,
     getBalanceOfETH,
     getBalanceOfERC20,
@@ -17,6 +18,10 @@ const {
     getBalanceOfTRC20,
 } = require('../libs/index');
 
+const getAllPrice = async (req, res) => {
+    const result = await getAllPriceData();
+    res.status(200).json(result);
+}
 
 const balanceOfBTC = async (req, res) => {
     const data = matchedData(req);
@@ -83,6 +88,7 @@ const balanceOfTRON_USDT = async (req, res) => {
 }
 
 module.exports = {
+    getAllPrice,
     balanceOfBTC,
     balanceOfETH,
     balanceOfETH_USDC,

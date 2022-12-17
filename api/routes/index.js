@@ -8,6 +8,7 @@ const {
  } = require('../validators/validator');
 
  const { 
+    getAllPrice,
     balanceOfBTC,
     balanceOfETH,
     balanceOfETH_USDC,
@@ -32,6 +33,6 @@ router.get('/balance-bnb-bep20', trimRequest.all, validateETH, balanceOfBNB_BEP2
 router.get('/balance-bnb-bep2', trimRequest.all, validateETH, balanceOfBNB_BEP2);//TODO
 router.get('/balance-tron-usdc', trimRequest.all, validateETH, balanceOfTRON_USDC);//TODO validator
 router.get('/balance-tron-usdt', trimRequest.all, validateETH, balanceOfTRON_USDT);//TODO validator
-
+router.get('/all-price', trimRequest.all, getAllPrice);
 
 module.exports = router;
