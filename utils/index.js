@@ -12,6 +12,7 @@ const ETH_RPC_URL = 'https://rpc.ankr.com/eth';
 const BSC_RPC_URL = 'https://bsc-dataseed1.binance.org';
 
 let ERC20ABI = JSON.parse(fs.readFileSync('abi/erc20.json','utf-8'));
+
 const TokenSymbols = [
     'BTC',
     'ETH',
@@ -21,6 +22,35 @@ const TokenSymbols = [
     'USDT',
     'BUSD'
 ];
+
+function getETH_AddrFromSymbol(symbol){
+    let address;
+    switch(symbol){
+        case 'USDC':
+            address = ETH_USDC_ADDR;
+            break;
+        case 'BNB':
+            address = ETH_BNB_ADDR;
+            break;
+        case 'BUSD':
+            address = ETH_BUSD_ADDR;
+            break;
+    }
+    return address;
+}
+
+function getTRON_AddrFromSymbol(symbol){
+    let address;
+    switch(symbol){
+        case 'USDC':
+            address = TRON_USDC_ADDR;
+            break;
+        case 'USDT':
+            address = TRON_USDT_ADDR;
+            break;
+    }
+    return address;
+}
 
 //multiply
 function setDecimals( number, decimals ){
@@ -81,5 +111,7 @@ module.exports = {
     addDecimals,
     setDecimals,
     getDecimals,
-    getDecimalsTRC20
+    getDecimalsTRC20,
+    getETH_AddrFromSymbol,
+    getTRON_AddrFromSymbol
 }

@@ -28,9 +28,8 @@ async function getAllPriceData() {
     let BUSD = await getPriceData('BUSD');
 
     let data = {
-        BTC : BTC, ETH : ETH, BNB: BNB, BECN : BECN, USDC : USDC, USDT : USDT, BUSD : BUSD
+        BTC : BTC, ETH : ETH, BEP20: BNB, BNB: BNB, BEP2 : BECN, USDC : USDC, USDT : USDT, BUSD : BUSD
     }
-    console.log(data);
     return data;
 }
 async function getPriceData( symbol ) {
@@ -69,7 +68,7 @@ const getBalanceOfETH = async( wallet ) => {
                         }
                     })
                     .then(function(res) {
-                        return { 'Balance' : res.data };
+                        return { 'Balance' : res.data['balance'] };
                     })
                     .catch(function(err) {
                         return { Error : err };
@@ -100,7 +99,7 @@ const getBalanceOfBNB_BEP20 = async( wallet ) => {
                         headers : { 'x-api-key' : 'ffb508aa-3bd0-424f-8816-050d1b82ac70' }
                     })
                     .then(function(res) {
-                        return { 'Balance' : res.data };
+                        return { 'Balance' : res.data['balance'] };
                     })
                     .catch(function(err) {
                         return { Error : err };
