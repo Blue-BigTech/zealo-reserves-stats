@@ -23,13 +23,18 @@ const sheetID = '1FpJprA9VDCniJiO3Z4Hlbqyh0Vp3GGU5P-ab95eHFUU';
 var rowID = 2;
 const sheetName = 'Binance';
 // const binance_reserve_data = [];
+var counter = 1;
+async function start() {
+    auth = await authorize();
+    main();
+}
 
 async function main() {
-    auth = await authorize();
+    console.log(counter);
     rowID = 2;
 
     const allPrices = await getAllPriceData();
-    console.log(allPrices);
+    // console.log(allPrices);
 
     const BTC_LIST = Binance_Hotwallet.BTC;
     const ETH_LIST = Binance_Hotwallet.ETH;
@@ -83,6 +88,8 @@ async function main() {
         addOneRecord(Symbol, 'TRON', Address, balance, allPrices[Symbol]);
     }
     // console.log(binance_reserve_data);
+    counter++;
+    setTimeout(main, 300000);
 }
 
 function addOneRecord(symbol, chain, wallet, balance, price) {
@@ -119,5 +126,6 @@ function delay(ms) {
     });
 }
 module.exports = {
-    main,
+    start,
+    main
 }
