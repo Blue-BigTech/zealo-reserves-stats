@@ -2,6 +2,8 @@ const fs = require('fs');
 const {BN} = require('web3-utils');
 const Web3 = require('web3');
 const TronWeb = require('tronweb');
+const { authorize } = require('./google-auth');
+const { writeDataAPI } = require('./sheetWriter');
 
 const ETH_USDC_ADDR = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 const ETH_BUSD_ADDR = '0x4Fabb145d64652a948d72533023f6E7A623C7C53';
@@ -100,6 +102,8 @@ async function getDecimalsTRC20(tokenAddress){
 }
 
 module.exports = {
+    authorize,
+    writeDataAPI,
     ETH_USDC_ADDR,
     ETH_BUSD_ADDR,
     ETH_BNB_ADDR,

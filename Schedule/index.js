@@ -9,14 +9,25 @@ const {
     getBalanceOfTRC20,
 } = require('../api/libs/index');
 const { 
+    authorize,
+    writeDataAPI,
     getETH_AddrFromSymbol,
     getTRON_AddrFromSymbol,
+    addDecimals
 } = require('../utils/index');
 
 const Binance_Hotwallet = JSON.parse(fs.readFileSync('wallet/hotwallet.json','utf-8'));
 
-let binance_reserve_data;
+var auth = null;
+const sheetID = '1FpJprA9VDCniJiO3Z4Hlbqyh0Vp3GGU5P-ab95eHFUU';
+var rowID = 2;
+const sheetName = 'Binance';
+// const binance_reserve_data = [];
+
 async function main() {
+    auth = await authorize();
+    rowID = 2;
+
     const allPrices = await getAllPriceData();
     console.log(allPrices);
 
@@ -71,11 +82,35 @@ async function main() {
         let balance = await getBalanceOfTRC20( contractAddress, Address );
         addOneRecord(Symbol, 'TRON', Address, balance, allPrices[Symbol]);
     }
-
+    // console.log(binance_reserve_data);
 }
 
 function addOneRecord(symbol, chain, wallet, balance, price) {
-    console.log(symbol, chain, wallet, balance['Balance'], price);
+    let value = 0;
+    if(balance.hasOwnProperty('Decimals')){
+        value = parseFloat( addDecimals(balance['Balance'], parseInt(balance['Decimals'])) );
+    }else{
+        value = parseFloat(balance['Balance']);
+    }
+    let priceValue = value * price;
+    // let record = {
+    //     coin    : symbol,
+    //     network : chain,
+    //     address : wallet,
+    //     balance : value,
+    //     price   : priceValue
+    // }
+    // console.log(record);
+    let values = [];
+    values.push(symbol);
+    values.push(chain);
+    values.push(wallet);
+    values.push(value);
+    values.push(priceValue);
+    let range = sheetName + '!A' + rowID + ':E';
+    writeDataAPI(auth, sheetID, range, values);
+    // binance_reserve_data.push(JSON.stringify(record));
+    rowID++;
 }
 
 function delay(ms) {
